@@ -16,6 +16,7 @@ builder.Services.AddServices();
 var app = builder.Build();
 
 app.UseStaticFiles();
+app.MapDefaultControllerRoute();
 
 app.MapControllerRoute("pagination",
                        "Products/Page{productPage}",
