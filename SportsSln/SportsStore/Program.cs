@@ -1,21 +1,28 @@
+using Microsoft.EntityFrameworkCore;
+using SportsStore.Configurations;
+using SportsStore.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<StoreDbContext>(opts =>
+{
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
+});
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
 app.UseStaticFiles();
 
-app.UseRouting();
+app.MapControllerRoute("pagination",
+                       "Products/Page{productPage}",
+                       new { Controller = "Home", action = "Index" });
 
-app.UseAuthorization();
+app.MapDefaultControllerRoute();
 
-app.MapRazorPages();
+SeedData.EnsurePopulated(app);
 
 app.Run();
