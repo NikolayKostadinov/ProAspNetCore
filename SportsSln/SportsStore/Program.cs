@@ -24,6 +24,6 @@ app.MapControllerRoute("pagination",
 
 app.MapDefaultControllerRoute();
 
-SeedData.EnsurePopulated(app);
+app.SeedData();
 
 app.Run();

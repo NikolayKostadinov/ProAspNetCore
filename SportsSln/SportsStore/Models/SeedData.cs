@@ -4,19 +4,7 @@ namespace SportsStore.Models
 {
     public class SeedData
     {
-        public static void EnsurePopulated(IApplicationBuilder app)
-        {
-            StoreDbContext context = app.ApplicationServices
-            .CreateScope().ServiceProvider.GetRequiredService<StoreDbContext>();
-
-            if (context.Database.GetPendingMigrations().Any())
-            {
-                context.Database.Migrate();
-            }
-
-            if (!context.Products.Any())
-            {
-                context.Products.AddRange(
+        private static readonly Product[] productsList = new[]{
                 new Product
                 {
                     Name = "Kayak",
@@ -79,9 +67,35 @@ namespace SportsStore.Models
                     Description = "Gold-plated, diamond-studded King",
                     Category = "Chess",
                     Price = 1200
-                });
+                } };
+        private readonly StoreDbContext context;
+
+        public SeedData(StoreDbContext context)
+        {
+            this.context = context;
+        }
+
+        public void EnsurePopulated()
+        {
+            EnsureMigration();
+            EnsureDataCreation();
+        }
+
+        private void EnsureDataCreation()
+        {
+            if (!context.Products.Any())
+            {
+                context.Products.AddRange(productsList);
 
                 context.SaveChanges();
+            }
+        }
+
+        private void EnsureMigration()
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
             }
         }
     }
