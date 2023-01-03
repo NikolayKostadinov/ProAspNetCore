@@ -12,17 +12,20 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
 });
 
 builder.Services.AddServices();
+builder.Services.AddRazorPages();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
 app.UseStaticFiles();
-app.MapDefaultControllerRoute();
 
-app.MapControllerRoute("pagination",
-                       "Products/Page{productPage}",
-                       new { Controller = "Home", action = "Index" });
+app.UseSession();
 
-app.MapDefaultControllerRoute();
+app.UseRoutes();
+
+app.MapRazorPages();
 
 app.SeedData();
 

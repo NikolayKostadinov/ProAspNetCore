@@ -9,7 +9,7 @@ namespace SportsStore.Configurations
         {
             services.AddScoped<SeedData, SeedData>();
             services.AddScoped<StoreDbContext, StoreDbContext>();
-            services.AddScoped<IStoreRepository, EFStoreRepository>();
+            services.AddScoped<IStoreRepository, EFStoreRepository>();         
         }
     }
 }

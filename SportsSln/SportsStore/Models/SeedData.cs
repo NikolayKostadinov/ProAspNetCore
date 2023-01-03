@@ -81,6 +81,14 @@ namespace SportsStore.Models
             EnsureDataCreation();
         }
 
+        private void EnsureMigration()
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+        }
+
         private void EnsureDataCreation()
         {
             if (!context.Products.Any())
@@ -88,14 +96,6 @@ namespace SportsStore.Models
                 context.Products.AddRange(productsList);
 
                 context.SaveChanges();
-            }
-        }
-
-        private void EnsureMigration()
-        {
-            if (context.Database.GetPendingMigrations().Any())
-            {
-                context.Database.Migrate();
             }
         }
     }
